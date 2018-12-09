@@ -9,10 +9,21 @@
         <link rel="stylesheet" href="css/style.css">
     </head>
     <body>
-        <h1>Hello World!</h1>
-        <p>Looks like you got the webserver up and running! Good job! Now it is time to
-         start working.
+        <h1>QuizTime</h1>
+        <p id="information">Let's play! <br>In this quiz you'll have a maximum of 20 seconds to answer
+            each question. If you answer wrong <i>or</i> not in time, the game is over
+            and you'll find yourself at the highscore page. And hey, it's not just about
+            having maximum correct answers to be on the top of the highscore - the whole
+            quiz is on time as well!
+<br>
+            - Good luck!
         </p>
+        <div id="quiz"></div>
+        <div id="textbox">
+            <input type="text" placeholder="Nickname"/>
+        </div>
+        <div class="button"><a href="#">Start</a></div>
+        <div id="results"></div>
 
         <script nomodule src="build.js"></script>
     </body>
