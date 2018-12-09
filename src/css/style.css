@@ -11,16 +11,10 @@ body {
   margin: auto;
   margin-top: 5%;
 }
-#textbox {
-  margin: auto;
-}
-.button {
-  border: 3px solid #5d9598;
-  background-color: white;
-  color: black;
-  width: 100px;
-  height: 20px;
-  font-size: 20px;
-  text-align: center;
-  margin: auto;
+button {
+  cursor: pointer;
+  background-color: #5d9598;
+  padding: 5px;
+  color: white;
+  border-radius: 5px;
 }
