@@ -5,7 +5,7 @@ class Timer {
     this.timerID = setInterval(this.countdown(), 1000)
   }
   countdown () {
-    if (this.timeLeft > 1) {
+    if (this.timeLeft === -1) {
       clearTimeout(this.timerID)
       this.doSomething()
     } else {
