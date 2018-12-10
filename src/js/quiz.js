@@ -6,8 +6,7 @@ template.innerHTML = /* html */ `
     <input id="name" type="text" placeholder="Nickname"/>
     <button class="button">Start</button>
 </div>
-<div id="quizbox"></div>
-<div id="results"></div>
+
 <style>
   #textbox {
     padding: 5px;
@@ -15,14 +14,6 @@ template.innerHTML = /* html */ `
   .button {
     cursor: pointer;
   }
-  #quizbox {
-    background:white;
-    color:black;
-    width: 700px;
-    height: 400px;
-    border: 2px solid #5d9598;
-    margin: auto;
-    }
 </style>
 `
 /**
@@ -37,21 +28,26 @@ class QuizTime extends window.HTMLElement {
     this._input = this.shadowRoot.querySelector('#name')
     this._button = this.shadowRoot.querySelector('.button')
     this._url = 'http://vhost3.lnu.se:20080/question/1'
+    this._minInput = this._input.value
   }
   connectedCallback () {
     this._button.addEventListener('click', e => {
-      let minLength = this._input.value
-      if (minLength.length > 2) {
-        console.log('testing')
+      if (this._minInput.length > 2) {
+        console.log('okay')
       } else {
         console.log('error')
       }
     })
   }
-
-  async getQuestion () {
-    this.question = await window.fetch(this._url)
-    console.log(await this.question.json())
+  openSesame () {
+    this._button.addEventListener('click', e => {
+      if (this._minInput.length > 2) {
+      }
+    })
+  }
+  async getQuestion (str) {
+    let question = await window.fetch(this._url)
+    return question.json()
   }
 }
 

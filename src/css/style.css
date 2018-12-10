@@ -12,3 +12,15 @@ body {
   margin-top: 1%;
   margin-bottom: 1%;
 }
+#quizbox {
+  background:white;
+  color:black;
+  width: 700px;
+  height: 400px;
+  border: 2px solid #5d9598;
+  margin: auto;
+  }
+#alt {
+  margin: auto;
+  width: 50%;
+}
