@@ -27,7 +27,6 @@ class QuizTime extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._input = this.shadowRoot.querySelector('#name')
     this._button = this.shadowRoot.querySelector('.button')
-    this._url = 'http://vhost3.lnu.se:20080/question/1'
     this.nickname = this._input.value
   }
   // when the start button is clicked, do onClick
@@ -38,11 +37,8 @@ class QuizTime extends window.HTMLElement {
     this.removeEventListener('click', this._onClick)
   }
   // when clicking start, fetch first question
-  _onClick () {
-
-  }
-  async getQuestion () {
-    this.question = await window.fetch(this._url)
+  async _onClick () {
+    this.question = await window.fetch('http://vhost3.lnu.se:20080/question/1')
     console.log(await this.question.json())
   }
 }
