@@ -3,8 +3,10 @@ const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="quiz">
 <div id="textbox">
+<form id="questionForm">
     <input id="name" type="text" placeholder="Nickname"/>
     <button class="button">Start</button>
+    </form>
 </div>
 </div>
 
@@ -59,8 +61,10 @@ class QuizTime extends window.HTMLElement {
     document.getElementById('question').innerHTML = this.obj.question
   }
   // when submitting, client-data will be sent to the server
-  _onSubmit () {
-    console.log('hello not done yet')
+  _onSubmit (event) {
+    if (event.type === 'click') {
+      event.preventDefault()
+    }
   }
 }
 
