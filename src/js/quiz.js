@@ -58,10 +58,6 @@ class QuizTime extends window.HTMLElement {
     // adding the question to the quiz
     document.getElementById('question').innerHTML = this.obj.question
   }
-  // function for the countdown timer
-  startTimer () {
-    console.log('not done')
-  }
   // when submitting, client-data will be sent to the server
   _onSubmit () {
     console.log('hello not done yet')
