@@ -25,7 +25,7 @@ class QuizTime extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
-    this._input = this.shadowRoot.querySelector('#name')
+    this._input = this.shadowRoot.querySelector('#name input')
     this._button = this.shadowRoot.querySelector('.button')
   }
   // when the start button is clicked, do onClick
@@ -37,9 +37,13 @@ class QuizTime extends window.HTMLElement {
   }
   // when clicking start, fetch first question
   async _onClick () {
-    this.question = await window.fetch('http://vhost3.lnu.se:20080/question/1')
-    this.question = await this.question.json()
-    console.log(this.question)
+    this.obj = await window.fetch('http://vhost3.lnu.se:20080/question/1')
+    this.obj = await this.obj.json()
+    console.log(this.obj)
+    // adding the question to the quiz
+    document.getElementById('question').innerHTML = this.obj.question
+  }
+  createQuestion () {
   }
   // when submitting, client-data will be sent to the server
   async _onSubmit () {
