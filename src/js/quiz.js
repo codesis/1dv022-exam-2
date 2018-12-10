@@ -27,7 +27,6 @@ class QuizTime extends window.HTMLElement {
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this._input = this.shadowRoot.querySelector('#name')
     this._button = this.shadowRoot.querySelector('.button')
-    this.nickname = this._input.value
   }
   // when the start button is clicked, do onClick
   connectedCallback () {
@@ -39,20 +38,21 @@ class QuizTime extends window.HTMLElement {
   // when clicking start, fetch first question
   async _onClick () {
     this.question = await window.fetch('http://vhost3.lnu.se:20080/question/1')
-    console.log(await this.question.json())
+    this.question = await this.question.json()
+    console.log(this.question)
+  }
+  // when submitting, client-data will be sent to the server
+  async _onSubmit () {
+    this.answer = await window.fetch('', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        answer: document.getElementById('#answer').value
+      })
+    })
   }
 }
-
-/** async getQuestion () {
-    let question = await window.fetch('http://vhost3.lnu.se:20080/question/1')
-    return question.json()
-  }
-    let req = new window.XMLHttpRequest()
-  req.addEventListener('load', function () {
-    console.log(req.responseText)
-  })
-  req.open('GET', 'data.json')
-  req.send()
-  */
 
 window.customElements.define('quiz-time', QuizTime)
