@@ -25,26 +25,19 @@ class QuizTime extends window.HTMLElement {
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this._input = this.shadowRoot.querySelector('#name')
     this._button = this.shadowRoot.querySelector('.button')
     this._url = 'http://vhost3.lnu.se:20080/question/1'
   }
   connectedCallback () {
     this._button.addEventListener('click', this._onClick)
   }
-  _onClick (event) {
-    this._input = this.shadowRoot.querySelector('#textbox name')
-    this._minInput = this._input.value
-    if (this._minInput.length > 2) {
-      console.log('works')
-    } else {
-      console.log('nope')
-    }
+  _onClick () {
+
   }
-  // fetching first question in json
   async getQuestion () {
-    let question = await window.fetch(this._url)
-    let obj = JSON.parse(question)
-    console.log(obj)
+    this.question = await window.fetch(this._url)
+    console.log(await this.question.json())
   }
 }
 
