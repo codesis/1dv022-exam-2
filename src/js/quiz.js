@@ -1,4 +1,4 @@
-
+// template for shadow dom
 const template = document.createElement('template')
 template.innerHTML = /* html */ `
 <div id="quiz"></div>
@@ -25,17 +25,33 @@ template.innerHTML = /* html */ `
     }
 </style>
 `
-
+/**
+ * @constructor
+ */
 class QuizTime extends window.HTMLElement {
   constructor () {
     super()
 
     this.attachShadow({ mode: 'open' })
     this.shadowRoot.appendChild(template.content.cloneNode(true))
+    this._input = this.shadowRoot.querySelector('#name')
+    this._button = this.shadowRoot.querySelector('.button')
+    this._url = 'http://vhost3.lnu.se:20080/question/1'
   }
+  connectedCallback () {
+    this._button.addEventListener('click', e => {
+      let minLength = this._input.value
+      if (minLength.length > 2) {
+        console.log('testing')
+      } else {
+        console.log('error')
+      }
+    })
+  }
+
   async getQuestion () {
-    let question = await window.fetch('http://vhost3.lnu.se:20080/question/1')
-    console.log(await question.json())
+    this.question = await window.fetch(this._url)
+    console.log(await this.question.json())
   }
 }
 
