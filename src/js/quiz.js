@@ -52,33 +52,48 @@ class QuizTime extends window.HTMLElement {
     this._button.addEventListener('click', function (event) {
       event.preventDefault()
     })
-    this._button.addEventListener('click', this.nicknameText)
-    // this._button.addEventListener('click', this._onClickSubmit)
+    // this._button.addEventListener('click', this.nicknameText)
+    this._button.addEventListener('click', this._onClickSubmit)
   }
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
-  nicknameText () {
-    let nicknameBox = document.querySelector('#name')
-    let nickName = nicknameBox
+  // making sure user has put 3 or more characters for a nickname
+  // nicknameText () {
+  //   let nickName = document.querySelector('#name')
+  //   let message = document.querySelector('#quiz p.nicknameText')
+
+  //   let nameText = nickName.value
+
+  //   if (nameText.length >= 3) {
+  //     // if 3 or more characters, fetch first question
+
+  //   } else {
+  //     message.innerHTML = 'You need to put in more characters to proceed'
+  //   }
+  // }
+  // when clicking submit, fetch first question
+  async _onClickSubmit () {
+    let nickName = document.querySelector('#name')
     let message = document.querySelector('#quiz p.nicknameText')
 
     let nameText = nickName.value
 
     if (nameText.length >= 3) {
-      message.innerHTML = 'Valid nickname'
+      // if 3 or more characters, fetch first question
+      this.obj = await window.fetch('http://vhost3.lnu.se:20080/question/1')
+      this.obj = await this.obj.json()
+      console.log(this.obj)
+      // adding the question to the quiz
+      document.getElementById('question').innerHTML = this.obj.question
     } else {
       message.innerHTML = 'You need to put in more characters to proceed'
     }
-  }
-
-  // when clicking submit, fetch first question
-  async _onClickSubmit () {
-    this.obj = await window.fetch('http://vhost3.lnu.se:20080/question/1')
-    this.obj = await this.obj.json()
-    console.log(this.obj)
-    // adding the question to the quiz
-    document.getElementById('question').innerHTML = this.obj.question
+    // this.obj = await window.fetch('http://vhost3.lnu.se:20080/question/1')
+    // this.obj = await this.obj.json()
+    // console.log(this.obj)
+    // // adding the question to the quiz
+    // document.getElementById('question').innerHTML = this.obj.question
   }
   // when submitting, client-data will be sent to the server
   // _onSubmit (event) {
