@@ -47,6 +47,9 @@ class QuizTime extends window.HTMLElement {
   }
   // when the start button is clicked, do onClick
   connectedCallback () {
+    this._button.addEventListener('click', function (event) {
+      event.preventDefault()
+    })
     this._button.addEventListener('click', this._onClickStart)
     this.submitButton.addEventListener('click', this._onSubmit)
   }
@@ -60,8 +63,6 @@ class QuizTime extends window.HTMLElement {
     console.log(this.obj)
     // adding the question to the quiz
     document.getElementById('question').innerHTML = this.obj.question
-
-    this.timer = new Timer()
   }
   // when submitting, client-data will be sent to the server
   _onSubmit (event) {
