@@ -21,7 +21,22 @@ body {
   border-radius: 5px;
   font-size: 20px;
 }
-.button {
+#answer {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+#start {
+  cursor: pointer;
+  background-color: #5d9598;
+  color: #ffe4e1;
+  font-size: 20px;
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
+}
+#submit {
   cursor: pointer;
   background-color: #5d9598;
   color: #ffe4e1;

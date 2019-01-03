@@ -8,8 +8,7 @@ class QuizTime extends window.HTMLElement {
     super()
 
     this._input = document.querySelector('#name input')
-    this._button = document.querySelector('.button')
-    this.submitButton = document.querySelector('#choice')
+    this._button = document.querySelector('#start')
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
@@ -20,9 +19,9 @@ class QuizTime extends window.HTMLElement {
     this._button.addEventListener('click', this._onClickSubmit)
   }
   disconnectedCallback () {
-    this.removeEventListener('click', this._onClickStart)
+    this.removeEventListener('click', this._onClickSubmit)
   }
-  // when clicking submit, fetch first question
+  // when clicking submit, fetch first question if nickname value is correct
   async _onClickSubmit () {
     let nickName = document.querySelector('#name')
     let message = document.querySelector('#quiz p.nicknameText')
@@ -36,6 +35,11 @@ class QuizTime extends window.HTMLElement {
       console.log(this.obj)
       // adding the question to the quiz
       document.getElementById('question').innerHTML = this.obj.question
+      document.getElementById('name').value = ''
+      document.getElementById('name').id = 'answer'
+      document.getElementById('start').id = 'submit'
+      document.getElementById('submit').innerHTML = 'Submit'
+      message.innerHTML = ''
     } else {
       message.innerHTML = 'You need to put in more characters to proceed'
     }
