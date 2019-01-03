@@ -34,6 +34,8 @@
 // `
 /**
  * @constructor
+ * @param _input is for nickname and the questions requiring a written answer
+ * @param _button is for when the button is clicked
  */
 class QuizTime extends window.HTMLElement {
   constructor () {
@@ -45,19 +47,33 @@ class QuizTime extends window.HTMLElement {
     this._button = document.querySelector('.button')
     this.submitButton = document.querySelector('#choice')
   }
-  // when the start button is clicked, do onClick
+  // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
     this._button.addEventListener('click', function (event) {
       event.preventDefault()
     })
-    this._button.addEventListener('click', this._onClickStart)
-    this.submitButton.addEventListener('click', this._onSubmit)
+    this._button.addEventListener('click', this.nicknameText)
+    // this._button.addEventListener('click', this._onClickSubmit)
   }
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
-  // when clicking start, fetch first question
-  async _onClickStart () {
+  nicknameText () {
+    let nicknameBox = document.querySelector('#name')
+    let nickName = nicknameBox
+    let message = document.querySelector('#quiz p.nicknameText')
+
+    let nameText = nickName.value
+
+    if (nameText.length >= 3) {
+      message.innerHTML = 'Valid nickname'
+    } else {
+      message.innerHTML = 'You need to put in more characters to proceed'
+    }
+  }
+
+  // when clicking submit, fetch first question
+  async _onClickSubmit () {
     this.obj = await window.fetch('http://vhost3.lnu.se:20080/question/1')
     this.obj = await this.obj.json()
     console.log(this.obj)
@@ -65,11 +81,11 @@ class QuizTime extends window.HTMLElement {
     document.getElementById('question').innerHTML = this.obj.question
   }
   // when submitting, client-data will be sent to the server
-  _onSubmit (event) {
-    if (event.type === 'click') {
-      event.preventDefault()
-    }
-  }
+  // _onSubmit (event) {
+  //   if (event.type === 'click') {
+  //     event.preventDefault()
+  //   }
+  // }
 }
 
 window.customElements.define('quiz-time', QuizTime)

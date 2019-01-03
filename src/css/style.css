@@ -13,7 +13,7 @@ body {
   margin-bottom: 1%;
 }
 #textbox {
-  padding: 25px;
+  padding: 5px;
 }
 #name {
   width: 100px;
@@ -29,6 +29,9 @@ body {
   width: 100px;
   height: 35px;
   border-radius: 5px;
+}
+.nicknameText {
+  color: red;
 }
 #quizbox {
   background:white;
