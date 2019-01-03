@@ -12,6 +12,24 @@ body {
   margin-top: 1%;
   margin-bottom: 1%;
 }
+#textbox {
+  padding: 25px;
+}
+#name {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+.button {
+  cursor: pointer;
+  background-color: #5d9598;
+  color: #ffe4e1;
+  font-size: 20px;
+  width: 100px;
+  height: 35px;
+  border-radius: 5px;
+}
 #quizbox {
   background:white;
   color:black;
