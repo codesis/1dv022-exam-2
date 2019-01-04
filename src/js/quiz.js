@@ -9,16 +9,15 @@ class QuizTime extends window.HTMLElement {
     super()
 
     this._input = document.querySelector('#name input')
-    this._startButton = document.querySelector('#start')
-    this._submitButton = document.querySelector('#submit')
+    this._button = document.querySelector('#submit')
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
-    this._startButton.addEventListener('click', function (event) {
+    this._button.addEventListener('click', function (event) {
       event.preventDefault()
     })
     // this._button.addEventListener('click', this.nicknameText)
-    this._startButton.addEventListener('click', this._onClickStart)
+    this._button.addEventListener('click', this._onClickStart)
   }
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
@@ -44,7 +43,7 @@ class QuizTime extends window.HTMLElement {
       console.log(this.obj)
       // adding the question to the quiz
       document.getElementById('question').innerHTML = this.obj.question
-      document.getElementById('name').innerHTML = ''
+      document.getElementById('name').value = ''
     } else {
       message.innerHTML = 'You need to put in more characters to proceed'
     }
