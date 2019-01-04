@@ -1,3 +1,4 @@
+// import { Question } from 'questions.js'
 /**
  * @constructor
  * @param _input is for nickname and the questions requiring a written answer
@@ -22,6 +23,13 @@ class QuizTime extends window.HTMLElement {
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
+  // async fetchQuestion () {
+  //   let nextURL = this.obj.nextURL
+  //   await window.fetch(nextURL)
+  //     .then(response => response.json())
+  //     .then(data => console.log(data))
+  //     .catch(err => console.error(err))
+  // }
   // when clicking start, fetch first question if nickname value is correct
   async _onClickStart () {
     let nickName = document.querySelector('#name')
@@ -36,14 +44,10 @@ class QuizTime extends window.HTMLElement {
       console.log(this.obj)
       // adding the question to the quiz
       document.getElementById('question').innerHTML = this.obj.question
+      document.getElementById('name').innerHTML = ''
     } else {
       message.innerHTML = 'You need to put in more characters to proceed'
     }
   }
-  // send user's data to server so we can receive following questions
-  async _onClickSubmit () {
-    document.getElementById('answer').value = 'hello'
-  }
 }
-
 window.customElements.define('quiz-time', QuizTime)
