@@ -48,7 +48,7 @@ body {
 .nicknameText {
   color: red;
 }
-#quizbox {
+#quizbox-Start, #quizbox-Answer, #quizbox-Alt {
   background:white;
   color:black;
   width: 700px;
@@ -56,4 +56,4 @@ body {
   border: 2px solid #5d9598;
   padding: 10px;
   margin: 50px;
-  }
+}

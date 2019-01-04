@@ -20,19 +20,45 @@
         </p>
         
         <quiz-time id="quizsrc" src="http://vhost3.lnu.se:20080/question/1"></quiz-time>
-        <div id="quizbox">
+        <div id="quizbox-Start">
             <h1 id="countdown">20</h1>
             <h2 id="question">Fill in your choice of nickname</h2>
             <div id="quiz">
                     <div id="textbox">
                     <form id="questionForm">
-                        <input id="name" type="text"/>
+                        <input id="name" type="text" autocomplete="off"/>
                         <button id="start">Start</button>
                         </form>
                     </div>
                     <p class="nicknameText"></p>
                     </div>                    
         </div>
+            <div id="quizbox-Answer" hidden>
+                <h1 id="countdown">20</h1>
+                <h2 id="question">answer-type question</h2>
+                <div id="quiz">
+                        <div id="textbox">
+                        <form id="questionForm">
+                            <input id="answer" type="text" autocomplete="off"/>
+                            <button id="submit" value="Send">Submit</button>
+                            </form>
+                        </div>
+                        <p class="nicknameText"></p>
+                        </div>                    
+            </div>
+                <div id="quizbox-Alt" hidden>
+                    <h1 id="countdown">20</h1>
+                    <h2 id="question">alternative-type question</h2>
+                    <div id="quiz">
+                            <div id="textbox">
+                            <form id="questionForm">
+                                <input id="alternative" type="radio"/>
+                                <button id="submit" value="Send">Submit</button>
+                                </form>
+                            </div>
+                            <p class="nicknameText"></p>
+                            </div>                    
+                </div>
         <script nomodule src="build.js"></script>
     </body>
 </html>

@@ -1,28 +1,29 @@
 /**
  * @constructor
  * @param _input is for nickname and the questions requiring a written answer
- * @param _button is for when the button is clicked
+ * @param _startButton & _submitButton is for when the button is clicked
  */
 class QuizTime extends window.HTMLElement {
   constructor () {
     super()
 
     this._input = document.querySelector('#name input')
-    this._button = document.querySelector('#start')
+    this._startButton = document.querySelector('#start')
+    this._submitButton = document.querySelector('#submit')
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
-    this._button.addEventListener('click', function (event) {
+    this._startButton.addEventListener('click', function (event) {
       event.preventDefault()
     })
     // this._button.addEventListener('click', this.nicknameText)
-    this._button.addEventListener('click', this._onClickSubmit)
+    this._startButton.addEventListener('click', this._onClickStart)
   }
   disconnectedCallback () {
-    this.removeEventListener('click', this._onClickSubmit)
+    this.removeEventListener('click', this._onClickStart)
   }
-  // when clicking submit, fetch first question if nickname value is correct
-  async _onClickSubmit () {
+  // when clicking start, fetch first question if nickname value is correct
+  async _onClickStart () {
     let nickName = document.querySelector('#name')
     let message = document.querySelector('#quiz p.nicknameText')
 
@@ -35,14 +36,13 @@ class QuizTime extends window.HTMLElement {
       console.log(this.obj)
       // adding the question to the quiz
       document.getElementById('question').innerHTML = this.obj.question
-      document.getElementById('name').value = ''
-      document.getElementById('name').id = 'answer'
-      document.getElementById('start').id = 'submit'
-      document.getElementById('submit').innerHTML = 'Submit'
-      message.innerHTML = ''
     } else {
       message.innerHTML = 'You need to put in more characters to proceed'
     }
+  }
+  // send user's data to server so we can receive following questions
+  async _onClickSubmit () {
+    document.getElementById('answer').value = 'hello'
   }
 }
 
