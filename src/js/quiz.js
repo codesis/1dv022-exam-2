@@ -22,13 +22,9 @@ class QuizTime extends window.HTMLElement {
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
-  // async fetchQuestion () {
-  //   let nextURL = this.obj.nextURL
-  //   await window.fetch(nextURL)
-  //     .then(response => response.json())
-  //     .then(data => console.log(data))
-  //     .catch(err => console.error(err))
-  // }
+  async fetchQuestion () {
+  }
+
   // when clicking start, fetch first question if nickname value is correct
   async _onClickStart () {
     let nickName = document.querySelector('#name')
@@ -43,9 +39,11 @@ class QuizTime extends window.HTMLElement {
       console.log(this.obj)
       // adding the question to the quiz
       document.getElementById('question').innerHTML = this.obj.question
+      this.nextURL = this.obj.nextURL
       document.getElementById('name').value = ''
+      document.getElementsByClassName('nicknameText').innerHTML = ''
     } else {
-      message.innerHTML = 'You need to put in more characters to proceed'
+      message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
     }
   }
 }
