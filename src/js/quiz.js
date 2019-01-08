@@ -12,7 +12,6 @@ class QuizTime extends window.HTMLElement {
     this._input = document.querySelector('#name input')
     this._button = document.querySelector('#submit')
     this._sendButton = document.getElementById('send')
-    this.nextURL = undefined
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
@@ -29,7 +28,7 @@ class QuizTime extends window.HTMLElement {
   // when clicking start, fetch first question if nickname value is correct
   async _onClickStart () {
     let nickName = document.querySelector('#name')
-    let message = document.querySelector('#quiz p.nicknameText')
+    this.message = document.querySelector('#quiz p.nicknameText')
 
     let nameText = nickName.value
 
@@ -46,7 +45,7 @@ class QuizTime extends window.HTMLElement {
       document.getElementById('name').value = ''
       document.getElementsByClassName('nicknameText').innerHTML = ''
     } else {
-      message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
+      this.message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
     }
   }
   // function to send the users answer/chosen alternative to the server
@@ -55,6 +54,7 @@ class QuizTime extends window.HTMLElement {
 
     let answer = document.getElementById('answer').value
     let alternative = document.getElementById('alternative').value
+    this.message = document.querySelector('#question')
 
     this.answer = await window.fetch('http://vhost3.lnu.se:20080/answer/1', {
       method: 'POST',
@@ -68,10 +68,14 @@ class QuizTime extends window.HTMLElement {
         // correct answer, next question
         if (obj.message === 'Correct answer!') {
           window.fetch(obj.nextURL)
-          document.getElementById('question').innerHTML = obj.question
-          console.log(obj.nextURL)
+          console.log(obj)
         } else {
           // wrong answer, back to startpage
+          this.message.style.color = 'red'
+          this.message.innerHTML = 'WRONG! YOU LOSE'
+          setTimeout(function () {
+            window.location.reload()
+          }, 2000)
           console.log('You lost, start over')
         }
       })
