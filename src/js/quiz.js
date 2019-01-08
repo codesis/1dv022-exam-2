@@ -39,10 +39,10 @@ class QuizTime extends window.HTMLElement {
       this.obj = await this.obj.json()
       console.log(this.obj)
       // adding the question to the quiz
+      this.nextURL = this.obj.nextURL
       document.getElementById('question').innerHTML = this.obj.question
       document.getElementById('quizbox-Start').style.visibility = 'hidden'
       document.getElementById('quizbox-Answer').style.visibility = 'visible'
-      this.nextURL = this.obj.nextURL
       document.getElementById('name').value = ''
       document.getElementsByClassName('nicknameText').innerHTML = ''
     } else {
@@ -56,7 +56,7 @@ class QuizTime extends window.HTMLElement {
     let answer = document.getElementById('answer').value
     let alternative = document.getElementById('alternative').value
 
-    await window.fetch('http://vhost3.lnu.se:20080/answer/1', {
+    this.answer = await window.fetch('http://vhost3.lnu.se:20080/answer/1', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -64,7 +64,17 @@ class QuizTime extends window.HTMLElement {
       body: JSON.stringify({ answer: answer, alternative: alternative })
     })
       .then((res) => res.json())
-      .then((data) => console.log(data))
+      .then((obj) => {
+        // correct answer, next question
+        if (obj.message === 'Correct answer!') {
+          window.fetch(obj.nextURL)
+          document.getElementById('question').innerHTML = obj.question
+          console.log(obj.nextURL)
+        } else {
+          // wrong answer, back to startpage
+          console.log('You lost, start over')
+        }
+      })
   }
 }
 window.customElements.define('quiz-time', QuizTime)
