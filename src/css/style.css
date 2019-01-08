@@ -49,6 +49,7 @@ body {
   color: red;
 }
 #quizbox-Start, #quizbox-Answer, #quizbox-Alt {
+  position: absolute;
   background:white;
   color:black;
   width: 700px;
@@ -56,4 +57,7 @@ body {
   border: 2px solid #5d9598;
   padding: 10px;
   margin: 50px;
+}
+.wrapper {
+  position: relative;
 }

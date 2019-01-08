@@ -18,7 +18,7 @@
 <br>
             - Good luck!
         </p>
-        
+        <div class="wrapper">
         <quiz-time id="quizsrc" src="http://vhost3.lnu.se:20080/question/1"></quiz-time>
         <div id="quizbox-Start">
             <h1 id="countdown">20</h1>
@@ -26,14 +26,14 @@
             <div id="quiz">
                     <div id="textbox">
                     <form id="questionForm">
-                        <input id="name" type="text" autocomplete="off"/>
+                        <input id="name" type="text" autocomplete="off" minlength="3"/>
                         <input type="button" id="submit" value="Start"></button>
                         </form>
                     </div>
                     <p class="nicknameText"></p>
                     </div>                    
         </div>
-            <div id="quizbox-Answer" hidden>
+            <div id="quizbox-Answer" style="visibility: hidden">
                 <h1 id="countdown">20</h1>
                 <h2 id="question">answer-type question</h2>
                 <div id="quiz">
@@ -41,25 +41,26 @@
                         <form id="questionForm">
                             <label>Answer
                             <input id="answer" type="text" autocomplete="off"/></label>
-                            <input type="button" id="submit" value="Send"></button>
+                            <input type="button" id="send" value="Send"></button>
                             </form>
                         </div>
                         <p class="nicknameText"></p>
                         </div>                    
             </div>
-                <div id="quizbox-Alt" hidden>
+                <div id="quizbox-Alt" style="visibility: hidden">
                     <h1 id="countdown">20</h1>
                     <h2 id="question">alternative-type question</h2>
                     <div id="quiz">
                             <div id="textbox">
                             <form id="questionForm">
                                 <input id="alternative" type="radio"/>
-                                <input type="button" id="submit" value="Send"></button>
+                                <input type="button" id="send" value="Send"></button>
                                 </form>
                             </div>
                             <p class="nicknameText"></p>
                             </div>                    
                 </div>
+            </div>
         <script nomodule src="build.js"></script>
     </body>
 </html>
