@@ -1,8 +1,10 @@
 /**
  * @constructor for the highscore
- * @param checkscore for the locally stored highscore
- * @param setHighscore to set nickname on list
-
+ * @param fetchFileData reads the hs file
+ * @param ifOnHighscore checks wether user makes it or not to hs list
+ * @param addNewHighscore puts new score on the hs list
+ * @param addToFile saves the hs file when new score is added
+ * @param highscoreDocument the document for the hs list
  */
 class HighScore extends window.HTMLElement() {
   constructor (nickname, score, server) {
@@ -72,6 +74,27 @@ class HighScore extends window.HTMLElement() {
   addToFile () {
     window.localStorage.setItem('hs-' + this.server, JSON.stringify(this.highscore))
   }
+  // the document holding the highscore
+  highscoreDocument () {
+    let doc = document.createDocumentFragment()
+    let div
+    let hsName
+    let hsScore
+
+    for (let i = 0; i < this.highscore.length; i += 1) {
+      div = document.querySelector('#quizbox-Highscore').content.cloneNode(true)
+      hsName = div.querySelector('.hs-nickname')
+      hsScore = div.querySelector('.hs-score')
+
+      hsName.appendChild(document.createTextNode(this.highscore[i].nickname))
+      hsScore.appendChild(document.createTextNode(this.highscore[i].score))
+
+      doc.appendChild(div)
+    }
+    return doc
+  }
 }
 
 window.customElements.define('high-score', HighScore)
+
+export default HighScore
