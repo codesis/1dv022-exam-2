@@ -1,4 +1,5 @@
-// import { Question } from 'questions.js'
+import { Question } from './questions.js'
+import { Timer } from './timer.js'
 /**
  * @constructor
  * @param _input is for nickname and the questions requiring a written answer
@@ -13,7 +14,8 @@ class QuizTime extends window.HTMLElement {
     this._input = document.querySelector('#name input')
     this._button = document.querySelector('#submit')
     this._sendButton = document.getElementById('send')
-    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
+    this.nextURL = 'http://vhost3.lnu.se:20080/question/21'
+    this._onClickStart = this._onClickStart.bind(this)
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
@@ -27,22 +29,17 @@ class QuizTime extends window.HTMLElement {
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
-  // when clicking start, fetch first question if nickname value is correct
-  async _onClickStart () {
+  // when clicking start, call getQuestion() if nickname value is correct
+  _onClickStart () {
     let nickName = document.querySelector('#name')
     this.message = document.querySelector('#quiz p.nicknameText')
 
     let nameText = nickName.value
-    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
 
     if (nameText.length >= 3) {
       // if 3 or more characters, fetch first question
-      this.obj = await window.fetch(this.nextURL)
-      this.obj = await this.obj.json()
-      console.log(this.obj)
+      this.getQuestion()
       // adding the question to the quiz
-      this.nextURL = this.obj.nextURL
-      document.getElementById('question').innerHTML = this.obj.question
       document.getElementById('nicknameChosen').innerHTML = nameText
       document.getElementById('quizbox-Start').style.visibility = 'hidden'
       document.getElementById('quizbox-Answer').style.visibility = 'visible'
@@ -52,32 +49,36 @@ class QuizTime extends window.HTMLElement {
       this.message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
     }
   }
-  async getQuestion (e) {
-    e.preventDefault()
-
-    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
-
+  // function to fetch questions
+  async getQuestion () {
     this.question = await window.fetch(this.nextURL)
     this.question = await this.question.json()
     this.nextURL = this.question.nextURL
     console.log(this.question)
 
-    return this.nextURL
+    document.getElementById('question').innerHTML = this.question.question
+    if (this.question.alternatives) {
+      this.presentAlt()
+    } else {
+      this.presentQuestion()
+    }
   }
   // function to send the users answer/chosen alternative to the server
-  async sendAnswer (e) {
-    e.preventDefault()
-
-    let answer = document.getElementById('answer').value
-    let alternative = document.getElementById('alternative').value
+  async sendAnswer () {
+    let input
+    if (document.querySelector('#answer')) {
+      input = document.querySelector('#answer').value
+    } else {
+      input = document.querySelector('#alternative:checked').value
+    }
     this.message = document.querySelector('#question')
 
-    await window.fetch('http://vhost3.lnu.se:20080/answer/1', {
+    await window.fetch('http://vhost3.lnu.se:20080/answer/21', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
-      body: JSON.stringify({ answer: answer, alternative: alternative })
+      body: JSON.stringify({ answer: input })
     })
       .then((res) => res.json())
       .then((obj) => {
@@ -94,6 +95,45 @@ class QuizTime extends window.HTMLElement {
           }, 2000)
         }
       })
+  }
+  presentAlt () {
+    let altQuestion = document.querySelector('#quizbox-Alt')
+    // altQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
+    // call the handler for the questions alternatives
+    let altChoices = this.altFragment()
+    altQuestion.querySelector('#questionForm').insertBefore(altChoices, altQuestion.querySelector('#submit'))
+    document.querySelector('#quizsrc').appendChild(altQuestion)
+    document.getElementById('quizbox-Alt').style.visibility = 'visible'
+    document.getElementById('quizbox-Answer').style.visibility = 'hidden'
+  }
+  // handle the questions alternatives by documentfragment
+  altFragment () {
+    let altChoices = document.createDocumentFragment()
+    let first = true
+    let input
+    let label
+    for (let alt in this.alt) {
+      if (this.alt.hasOwnProperty(alt)) {
+        input = document.querySelector('#quizbox-Alt').content.cloneNode(true)
+        if (first) {
+          input.querySelector('input').setAttribute('checked', 'checked')
+          first = false
+        }
+        input.querySelector('input').setAttribute('value', alt)
+        label = input.querySelector('label')
+        label.appendChild(document.createTextNode(this.alt[alt]))
+        altChoices.appendChild(input)
+      }
+    }
+    return altChoices
+  }
+
+  presentQuestion () {
+    // let answerQuestion = document.querySelector('#quixbox-Answer')
+    // answerQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
+    // document.querySelector('#quizsrc').appendChild(answerQuestion)
+    document.getElementById('quizbox-Alt').style.visibility = 'hidden'
+    document.getElementById('quizbox-Answer').style.visibility = 'visible'
   }
 }
 window.customElements.define('quiz-time', QuizTime)

@@ -23,9 +23,9 @@ class Timer {
       this.owner.gameOver('time')
     }
     if (showTime <= 10) {
-      this.print(showTime.toFixed(1))
+      this.printTime(showTime.toFixed(1))
     } else {
-      this.print(showTime.toFixed(0))
+      this.printTime(showTime.toFixed(0))
     }
   }
   stopTimer () {
