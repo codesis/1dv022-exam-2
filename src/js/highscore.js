@@ -7,12 +7,12 @@
  * @param highscoreDocument the document for the hs list
  */
 class HighScore extends window.HTMLElement() {
-  constructor (nickname, score, server) {
+  constructor (nickname, server, time) {
     super()
 
     this.nickname = nickname
-    this.score = score
     this.server = server
+    this.time = time
     this.highscore = []
 
     this.fetchFileData()
@@ -39,9 +39,9 @@ class HighScore extends window.HTMLElement() {
       ifHighscore = true
     } else {
       // check the last submitted score on the highscore
-      let prevScore = this.highscore[this.highscore.length - 1].score
-      // if the score is greater than the last score on list or if highscore has less than 5 submits
-      if (parseFloat(this.score) < parseFloat(prevScore) || this.highscore.length < 5) {
+      let prevScore = this.highscore[this.highscore.length - 1].time
+      // if the time is faster than the last time on list or if highscore has less than 5 submits
+      if (parseFloat(this.time) < parseFloat(prevScore) || this.highscore.length < 5) {
         ifHighscore = true
       }
     }
@@ -54,7 +54,7 @@ class HighScore extends window.HTMLElement() {
     if (this.ifHighscore()) {
       let newScore = {
         nickname: this.nickname,
-        score: this.score
+        time: this.time
       }
       // incase of hs having 5 already, delete last place
       if (this.highscore.length === 5) {
@@ -62,7 +62,7 @@ class HighScore extends window.HTMLElement() {
       }
       // sort the hs array before adding/saving the hs file
       this.highscore.push(newScore)
-      this.highscore = this.highscore.sort((a, b) => a.score - b.score)
+      this.highscore = this.highscore.sort((a, b) => a.time - b.time)
 
       this.addToFile()
 
@@ -79,15 +79,15 @@ class HighScore extends window.HTMLElement() {
     let doc = document.createDocumentFragment()
     let div
     let hsName
-    let hsScore
+    let hsTime
 
     for (let i = 0; i < this.highscore.length; i += 1) {
       div = document.querySelector('#quizbox-Highscore').content.cloneNode(true)
       hsName = div.querySelector('.hs-nickname')
-      hsScore = div.querySelector('.hs-score')
+      hsTime = div.querySelector('.hs-time')
 
       hsName.appendChild(document.createTextNode(this.highscore[i].nickname))
-      hsScore.appendChild(document.createTextNode(this.highscore[i].score))
+      hsTime.appendChild(document.createTextNode(this.highscore[i].time))
 
       doc.appendChild(div)
     }
