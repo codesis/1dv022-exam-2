@@ -45,8 +45,21 @@ body {
   height: 35px;
   border-radius: 5px;
 }
+#send {
+    cursor: pointer;
+    background-color: #5d9598;
+    color: #ffe4e1;
+    font-size: 20px;
+    width: 100px;
+    height: 35px;
+    border-radius: 5px;  
+}
 .nicknameText {
   color: red;
+}
+#nicknameChosen {
+  color: blueviolet;
+  font-style: italic;
 }
 #quizbox-Start, #quizbox-Answer, #quizbox-Alt {
   position: absolute;
