@@ -61,6 +61,11 @@ body {
   color: blueviolet;
   font-style: italic;
 }
+#question {
+  margin-left: 15%;
+  margin-bottom: 0%;
+  font-size: 30px;
+}
 #quizbox-Start, #quizbox-Answer, #quizbox-Alt {
   position: absolute;
   background:white;
