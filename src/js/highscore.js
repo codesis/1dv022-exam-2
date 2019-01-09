@@ -7,9 +7,8 @@
  * @param highscoreDocument the document for the hs list
  */
 class HighScore {
-  constructor (nickname, server, time) {
+  constructor (nickname, time) {
     this.nickname = nickname
-    this.server = server
     this.time = time
     this.highscore = []
 
@@ -17,7 +16,7 @@ class HighScore {
   }
   // Function to read the highscore file
   fetchFileData () {
-    let hsData = window.localStorage.getItem('hs-' + this.server)
+    let hsData = window.localStorage.getItem('hs')
 
     if (hsData) {
       let json = JSON.parse(hsData)
@@ -39,7 +38,7 @@ class HighScore {
       // check the last submitted score on the highscore
       let prevScore = this.highscore[this.highscore.length - 1].time
       // if the time is faster than the last time on list or if highscore has less than 5 submits
-      if (parseFloat(this.time) < parseFloat(prevScore) || this.highscore.length < 5) {
+      if (this.time < prevScore || this.highscore.length < 5) {
         ifHighscore = true
       }
     }
@@ -70,7 +69,7 @@ class HighScore {
   }
   // saving the highscore to local storage in JSON
   addToFile () {
-    window.localStorage.setItem('hs-' + this.server, JSON.stringify(this.highscore))
+    window.localStorage.setItem('hs', JSON.stringify(this.highscore))
   }
   // the document holding the highscore
   highscoreDocument () {
