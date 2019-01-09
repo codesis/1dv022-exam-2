@@ -54,11 +54,11 @@ class QuizTime extends window.HTMLElement {
     this.question = await window.fetch(this.nextURL)
     this.question = await this.question.json()
     this.nextURL = this.question.nextURL
+    this.alt = this.question.alternatives
     console.log(this.question)
 
     document.getElementById('question').innerHTML = this.question.question
-
-    if (this.question.alternatives) {
+    if (this.alt) {
       this.presentAlt()
     } else {
       this.presentQuestion()
@@ -100,6 +100,10 @@ class QuizTime extends window.HTMLElement {
   presentAlt () {
     document.getElementById('quizbox-Alt').style.visibility = 'visible'
     document.getElementById('quizbox-Answer').style.visibility = 'hidden'
+    this.alternatives = document.getElementsByClassName('alternatives')
+    for (let i = 0; i < this.alternatives.length; i++) {
+      this.alternatives[i].value = this.alt
+    }
   }
   presentQuestion () {
     // let answerQuestion = document.querySelector('#quixbox-Answer')
