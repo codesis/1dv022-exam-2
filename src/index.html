@@ -20,7 +20,7 @@
         </p>
         <div class="wrapper">
         <quiz-time id="quizsrc" src="http://vhost3.lnu.se:20080/question/1"></quiz-time>
-        <div id="quizbox-Start">
+        <div id="quizbox-Start" style="visibility: visible">
             <h1 id="countdown">20</h1>
             <h2 id="startText">Fill in your choice of nickname</h2>
             <div id="quiz">
@@ -63,10 +63,18 @@
                             </div>                    
                 </div>
                 <div id="quizbox-Highscore" style="visibility: hidden">
+                    <h1 id="titleHS">Highscore</h1>
+                    <h2 id="text"></h2>
+                    <table>
+                        <tr id="headline">
+                            <th>Nickname</th>
+                            <th>Time</th>
+                        </tr>
                     <tr>
                         <td class="hs-nickname"></td>
                         <td class="hs-time"></td>
                     </tr>
+                </table>
                 </div>    
             </div>
         <script nomodule src="build.js"></script>

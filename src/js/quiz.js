@@ -13,11 +13,7 @@ class QuizTime extends window.HTMLElement {
     this._input = document.querySelector('#name input')
     this._button = document.querySelector('#submit')
     this._sendButton = document.getElementById('send')
-    this.nextURL = undefined
-    this.question = {}
-    this.answer = {}
-
-    this.getQuestion()
+    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
   }
   // when the start button is clicked, first do NOT refresh the page and then do onClick
   connectedCallback () {
@@ -31,26 +27,22 @@ class QuizTime extends window.HTMLElement {
   disconnectedCallback () {
     this.removeEventListener('click', this._onClickStart)
   }
-  async getQuestion () {
-    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
-
-    this.question = await window.fetch(this.nextURL)
-    this.question = await this.question.json()
-    console.log(this.question)
-
-    this.nextURL = this.question.nextURL
-  }
   // when clicking start, fetch first question if nickname value is correct
   async _onClickStart () {
     let nickName = document.querySelector('#name')
     this.message = document.querySelector('#quiz p.nicknameText')
 
     let nameText = nickName.value
+    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
 
     if (nameText.length >= 3) {
       // if 3 or more characters, fetch first question
-      window.getQuestion()
-      document.getElementById('question').innerHTML = this.question.question
+      this.obj = await window.fetch(this.nextURL)
+      this.obj = await this.obj.json()
+      console.log(this.obj)
+      // adding the question to the quiz
+      this.nextURL = this.obj.nextURL
+      document.getElementById('question').innerHTML = this.obj.question
       document.getElementById('nicknameChosen').innerHTML = nameText
       document.getElementById('quizbox-Start').style.visibility = 'hidden'
       document.getElementById('quizbox-Answer').style.visibility = 'visible'
@@ -60,6 +52,18 @@ class QuizTime extends window.HTMLElement {
       this.message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
     }
   }
+  async getQuestion (e) {
+    e.preventDefault()
+
+    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
+
+    this.question = await window.fetch(this.nextURL)
+    this.question = await this.question.json()
+    this.nextURL = this.question.nextURL
+    console.log(this.question)
+
+    return this.nextURL
+  }
   // function to send the users answer/chosen alternative to the server
   async sendAnswer (e) {
     e.preventDefault()
@@ -68,7 +72,7 @@ class QuizTime extends window.HTMLElement {
     let alternative = document.getElementById('alternative').value
     this.message = document.querySelector('#question')
 
-    await window.fetch(this.nextURL, {
+    await window.fetch('http://vhost3.lnu.se:20080/answer/1', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'

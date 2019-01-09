@@ -6,10 +6,8 @@
  * @param addToFile saves the hs file when new score is added
  * @param highscoreDocument the document for the hs list
  */
-class HighScore extends window.HTMLElement() {
+class HighScore {
   constructor (nickname, server, time) {
-    super()
-
     this.nickname = nickname
     this.server = server
     this.time = time
@@ -95,6 +93,4 @@ class HighScore extends window.HTMLElement() {
   }
 }
 
-window.customElements.define('high-score', HighScore)
-
-export default HighScore
+export { HighScore }

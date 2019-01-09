@@ -31,6 +31,8 @@ class Question {
     let altChoices = this.altFragment()
     altQuestion.querySelector('#questionForm').insertBefore(altChoices, altQuestion.querySelector('#submit'))
     document.querySelector('#quizsrc').appendChild(altQuestion)
+    document.getElementById('quizbox-Alt').style.visibility = 'visible'
+    document.getElementById('quizbox-Answer').style.visibility = 'hidden'
   }
   // handle the questions alternatives by documentfragment
   altFragment () {
@@ -58,7 +60,9 @@ class Question {
     let answerQuestion = document.querySelector('#quixbox-Answer').content.cloneNode(true)
     answerQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
     document.querySelector('#quizsrc').appendChild(answerQuestion)
+    document.getElementById('quizbox-Alt').style.visibility = 'hidden'
+    document.getElementById('quizbox-Answer').style.visibility = 'visible'
   }
 }
 
-export default Question
+export { Question }
