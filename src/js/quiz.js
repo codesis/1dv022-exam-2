@@ -10,7 +10,7 @@ class QuizTime extends window.HTMLElement {
     super()
 
     this.totalTime = 0
-    this.nickname = nickname
+    this.nickname = document.querySelector('.nickname').value
     this.button = undefined
     this.timer = undefined
     this.form = undefined
