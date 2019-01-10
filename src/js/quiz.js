@@ -1,116 +1,138 @@
 import { Question } from './questions.js'
 import { Timer } from './timer.js'
+import { Ajax } from './ajax.js'
+import { Highscore } from './highscore.js'
 /**
  * @constructor
- * @param _input is for nickname and the questions requiring a written answer
- * @param _startButton & _submitButton is for when the button is clicked
- * @param _sendButton sends the users answer (the form) to the server
  */
 class QuizTime extends window.HTMLElement {
-  constructor () {
+  constructor (nickname) {
     super()
 
     this.totalTime = 0
-    this._input = document.querySelector('#name input')
-    this._button = document.querySelector('#submit')
-    this._sendButton = document.getElementById('send')
-    this.nextURL = 'http://vhost3.lnu.se:20080/question/21'
-    this._onClickStart = this._onClickStart.bind(this)
+    this.nickname = nickname
+    this.button = undefined
+    this.timer = undefined
+    this.form = undefined
+    this.question = undefined
+    this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
   }
-  // when the start button is clicked, first do NOT refresh the page and then do onClick
-  connectedCallback () {
-    this._button.addEventListener('click', function (event) {
-      event.preventDefault()
-    })
-    // this._button.addEventListener('click', this.nicknameText)
-    this._button.addEventListener('click', this._onClickStart)
-    this._sendButton.addEventListener('click', this.sendAnswer)
-  }
-  disconnectedCallback () {
-    this.removeEventListener('click', this._onClickStart)
-  }
-  // when clicking start, call getQuestion() if nickname value is correct
-  _onClickStart () {
-    let nickName = document.querySelector('#name')
-    this.message = document.querySelector('#quiz p.nicknameText')
+  // our eventlisteners for the form and the submit button
+  listener () {
+    this.form = document.querySelector('#questionForm')
+    this.button = document.querySelector('#submit')
 
-    let nameText = nickName.value
-
-    if (nameText.length >= 3) {
-      // if 3 or more characters, fetch first question
-      this.getQuestion()
-      // adding the question to the quiz
-      document.getElementById('nicknameChosen').innerHTML = nameText
-      document.getElementById('quizbox-Start').style.visibility = 'hidden'
-      document.getElementById('quizbox-Answer').style.visibility = 'visible'
-      document.getElementById('name').value = ''
-      document.getElementsByClassName('nicknameText').innerHTML = ''
-    } else {
-      this.message.innerHTML = 'You need to put in a minimum of 3 characters to proceed'
+    this.form.addEventListener('keypress', this.submit.bind(this))
+    this.button.addEventListener('click', this.submit.bind(this))
+  }
+  // function to request questions
+  getQuestion () {
+    let config = {
+      method: 'GET',
+      url: this.nextURL
     }
-  }
-  // function to fetch questions
-  async getQuestion () {
-    this.question = await window.fetch(this.nextURL)
-    this.question = await this.question.json()
-    this.nextURL = this.question.nextURL
-    this.alt = this.question.alternatives
-    console.log(this.question)
+    let respFunc = this.response.bind(this)
 
-    document.getElementById('question').innerHTML = this.question.question
-    if (this.alt) {
-      this.presentAlt()
-    } else {
-      this.presentQuestion()
-    }
+    Ajax.request(config, respFunc)
   }
-  // function to send the users answer/chosen alternative to the server
-  async sendAnswer () {
-    let input
-    if (document.querySelector('#answer')) {
-      input = document.querySelector('#answer').value
-    } else {
-      input = document.querySelector('#alternative:checked').value
+  // handler for our response, if error or if response
+  response (error, response) {
+    if (error) {
+      this.gameEnds()
     }
-    this.message = document.querySelector('#question')
+    if (response) {
+      let obj = JSON.parse(response)
+      this.nextURL = obj.nextURL
 
-    await window.fetch('http://vhost3.lnu.se:20080/answer/21', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify({ answer: input })
-    })
-      .then((res) => res.json())
-      .then((obj) => {
-        // correct answer, next question
-        if (obj.message === 'Correct answer!') {
-          window.fetch(obj.nextURL)
-          console.log(obj)
-        } else {
-          // wrong answer, back to startpage
-          this.message.style.color = 'red'
-          this.message.innerHTML = 'WRONG! YOU LOSE'
-          setTimeout(function () {
-            window.location.reload()
-          }, 2000)
+      if (obj.question) {
+        this.respQuestion(obj)
+      } else {
+        if (this.nextURL || obj.message === 'Correct answer!') {
+          this.respAnswer(obj)
         }
-      })
-  }
-  presentAlt () {
-    document.getElementById('quizbox-Alt').style.visibility = 'visible'
-    document.getElementById('quizbox-Answer').style.visibility = 'hidden'
-    this.alternatives = document.getElementsByClassName('alternatives')
-    for (let i = 0; i < this.alternatives.length; i++) {
-      this.alternatives[i].value = this.alt
+      }
     }
   }
-  presentQuestion () {
-    // let answerQuestion = document.querySelector('#quixbox-Answer')
-    // answerQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
-    // document.querySelector('#quizsrc').appendChild(answerQuestion)
-    document.getElementById('quizbox-Alt').style.visibility = 'hidden'
-    document.getElementById('quizbox-Answer').style.visibility = 'visible'
+  // handler for if our response is a question
+  respQuestion (obj) {
+    let content = document.querySelector('#content')
+    this.clearDiv(content)
+
+    this.question = new Question(obj)
+    this.question.present()
+
+    this.timer = new Timer(this, document.querySelector('#timer h1'), 20)
+    this.timer.startTimer()
+
+    this.listener()
+  }
+  // handler for when the response is an answer
+  respAnswer (obj) {
+    let content = document.querySelector('#content')
+    this.clearDiv(content)
+
+    let text = document.createTextNode(obj.message)
+    let template = document.querySelector('#temp-answer').content.cloneNode(true)
+
+    template.querySelector('p').appendChild(text)
+
+    content.appendChild(template)
+    // if we have a nextURL, wait 1 second before showing. if not, game is completed
+    if (this.nextURL) {
+      let nextQuestion = this.getQuestion.bind(this)
+      setTimeout(nextQuestion, 1000)
+    } else {
+      this.gameComplete()
+    }
+  }
+  submit (e) {
+    if (e.keyCode === 13 || e.which === 13 || e.type === 'click') {
+      e.preventDefault()
+
+      this.totalTime += this.timer.stopTimer()
+
+      let input
+
+      this.form.removeEventListener('keypress', this.submit.bind(this))
+      this.button.removeEventListener('click', this.submit.bind(this))
+
+      if (document.querySelector('#answer')) {
+        input = document.querySelector('#answer').value
+      } else {
+        input = document.getElementsByName('alternative').checked.value
+      }
+      let config = {
+        method: 'POST',
+        url: this.nextURL,
+        data: {
+          answer: input
+        }
+      }
+      let respFunc = this.response.bind(this)
+      Ajax.request(config, respFunc)
+    }
+  }
+  // handler for when user loses the game because of wrong answer or lack of time
+  gameEnds (cause) {
+    let hs = new Highscore(this.nickname, this.totalTime.toFixed(1))
+    this.clearDiv(document.querySelector('#content'))
+
+    let template = document.querySelector('#temp-gameEnds').content.cloneNode(true)
+
+    let title
+    if (cause === 'time') {
+      title = document.createTextNode('Uh oh, time is up! You lose!')
+    } else {
+      title = document.createTextNode('Wrong! You lose!')
+    }
+    template.querySelector('h1').appendChild(title)
+
+    if (hs.highscore.length > 0) {
+      template.querySelector('h2').appendChild(document.createTextNode('Current highscore:'))
+      let hsDoc = hs.highscoreDocument()
+      template.querySelector('table').appendChild(hsDoc)
+    }
+    document.querySelector('#content').appendChild(template)
   }
 }
 window.customElements.define('quiz-time', QuizTime)

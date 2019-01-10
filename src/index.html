@@ -1,83 +1,102 @@
-<!doctype html>
-<html lang="">
-    <head>
-        <meta charset="utf-8">
-        <title></title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script type="module" src="js/app.js"></script>
-        <link rel="stylesheet" href="css/style.css">
-    </head>
-    <body>
-        <h1>QuizTime</h1>
-        <p id="information">Let's play! <br>In this quiz you'll have a maximum of 20 seconds to answer
-            each question. If you answer wrong <i>or</i> not in time, the game is over
-            and you'll find yourself at the highscore page. And hey, it's not just about
-            having maximum correct answers to be on the top of the highscore - the whole
-            quiz is on time as well!
-<br>
-            - Good luck!
-        </p>
-        <div class="wrapper">
-        <quiz-time id="quizsrc" src="http://vhost3.lnu.se:20080/question/1"></quiz-time>
-        <h2 id="question">Fill in your choice of nickname</h2>
-        <div id="quizbox-Start" style="visibility: visible">
-            <div id="countdown"><h1 class="timer"></h1>-</div>
-            <div id="quiz">
-                    <div id="textbox">
-                    <form id="questionForm">
-                        <input id="name" type="text" autocomplete="off" minlength="3"/>
-                        <input type="button" id="submit" value="Start"></button>
-                        </form>
-                    </div>
-                    <p class="nicknameText"></p>
-                    </div>                    
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Codesis exam2 - Quiz</title>
+    <link rel="stylesheet" href="css/style.css">
+
+    <template id="temp-question">
+        <div id="timer"><h1 class="timerH1">-</h1></div>
+        <div id="question">
+            <h1 class="quizHead"></h1>
+            <form id="questionForm">
+                <p>Answer</p>
+                <input type="text" id="answer" autocomplete="off"/><br>
+                <input type="button" id="submit" value="Next"/>
+            </form>
         </div>
-            <div id="quizbox-Answer" style="visibility: hidden">
-                    <div id="countdown"><h1 class="timer"></h1>-</div>
-                    <h3 id="nicknameChosen"></h3>
-                <div id="quiz">
-                        <div id="textbox">
-                        <form id="questionForm">
-                            <label>Answer
-                            <input id="answer" type="text" autocomplete="off"/></label>
-                            <input type="button" id="send" value="Send"></button>
-                            </form>
-                        </div>
-                        <p class="nicknameText"></p>
-                        </div>                    
-            </div>
-                <div id="quizbox-Alt" style="visibility: hidden">
-                        <div id="countdown"><h1 class="timer"></h1>-</div>
-                        <h3 id="nicknameChosen"></h3>
-                    <div id="quiz">
-                            <div id="textbox">
-                            <form id="questionForm">
-                                <input class="alternative" type="radio" value="a"/>
-                                <input class="alternative" type="radio" value="b"/>
-                                <input class="alternative" type="radio" value="c"/>
-                                <input class="alternative" type="radio" value="d"/>
-                                <input type="button" id="send" value="Send"></button>
-                                </form>
-                            </div>
-                            <p class="nicknameText"></p>
-                            </div>                    
-                </div>
-                <div id="quizbox-Highscore" style="visibility: hidden">
-                    <h1 id="titleHS">Highscore</h1>
-                    <h2 id="text"></h2>
-                    <table>
-                        <tr id="headline">
-                            <th>Nickname</th>
-                            <th>Time</th>
-                        </tr>
-                    <tr>
-                        <td class="hs-nickname"></td>
-                        <td class="hs-time"></td>
-                    </tr>
-                </table>
-                </div>    
-            </div>
-        <script nomodule src="build.js"></script>
-    </body>
+    </template>
+
+    <template id="temp-questionAlt">
+        <div id="timer"><h1 class="timerH1">-</h1></div>
+        <div id="question">
+            <h1 class="quizHead"></h1>
+            <form id="questionForm">
+                <input type="button" id="submit" value="Next"/>
+            </form>
+        </div>
+    </template>
+
+    <template id="temp-alternative">
+        <div class="alternativeList">
+            <label class="radio-label"><input type="radio" name="alternative"/></label>
+        </div>
+    </template>
+
+    <template id="temp-answer">
+        <div id="answer-response">
+            <p></p>
+        </div>
+    </template>
+
+    <template id="temp-newHighscore">
+        <div>
+            <h1>New Highscore!</h1>
+            <h3>Game finished in <span class="time"></span>seconds</h3>
+            <h2 class="hs-title"></h2>
+            <table>
+            </table>
+            <p class="newGame"><a href="?">Wanna play again?</a></p>
+        </div>
+    </template>
+
+    <template id="temp-quizFinished">
+        <div>
+            <h3 class="show-score">Game finished in <span class="time"></span>seconds</h3>
+            <h2 class="hs-title"></h2>
+            <table>
+            </table>
+            <p class="newGame"><a href="?">Wanna play again?</a></p>
+        </div>
+    </template>
+
+    <template id="temp-gameEnds">
+        <div>
+            <h1></h1>
+            <h2 class="hs-title"></h2>
+            <table>
+            </table>
+            <p class="newGame"><a href="?">Wanna try again?</a></p>
+        </div>
+    </template>
+
+    <template id="temp-highscoreList">
+        <tr>
+            <td class="hs-nickname"></td>
+            <td class="hs-score"></td>
+        </tr>
+    </template>
+</head>
+<body>
+<div id="wrapper">
+    <div id="content">
+        <div id="welcome">
+            <h1 class="welcomeText">Let's quiz!</h1>
+            <p id="information">Let's play! <br>In this quiz you'll have a maximum of 20 seconds to answer
+                each question. If you answer wrong <i>or</i> not in time, the game is over
+                and you'll find yourself at the highscore page. And hey, it's not just about
+                having maximum correct answers to be on the top of the highscore - the whole
+                quiz is on time as well!
+    <br>
+                - Good luck!
+            </p>            
+            <form id="questionForm">
+                <p class="nickname">Nickname:</p>
+                <input type="text" id="nickname"/> <br>
+                <input type="button" id="submit" value="Next"/>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="javascript/build.js"></script>
+</body>
 </html>
