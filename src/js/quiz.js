@@ -134,5 +134,9 @@ class QuizTime extends window.HTMLElement {
     }
     document.querySelector('#content').appendChild(template)
   }
+  // handler for when user completed the quiz
+  gameComplete () {
+
+  }
 }
 window.customElements.define('quiz-time', QuizTime)
