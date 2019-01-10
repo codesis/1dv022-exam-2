@@ -1,6 +1,6 @@
 import { Question } from './questions.js'
 import { Timer } from './timer.js'
-import { Ajax } from './ajax.js'
+import { ajax } from './ajax.js'
 import { Highscore } from './highscore.js'
 /**
  * @constructor
@@ -33,7 +33,7 @@ class QuizTime extends window.HTMLElement {
     }
     let respFunc = this.response.bind(this)
 
-    Ajax.request(config, respFunc)
+    ajax.request(config, respFunc)
   }
   // handler for our response, if error or if response
   response (error, response) {
@@ -111,7 +111,7 @@ class QuizTime extends window.HTMLElement {
         }
       }
       let respFunc = this.response.bind(this)
-      Ajax.request(config, respFunc)
+      ajax.request(config, respFunc)
     }
   }
   // handler for when user loses the game because of wrong answer or lack of time
@@ -169,3 +169,5 @@ class QuizTime extends window.HTMLElement {
   }
 }
 window.customElements.define('quiz-time', QuizTime)
+
+export { QuizTime }

@@ -6,7 +6,7 @@
  * @param addToFile saves the hs file when new score is added
  * @param highscoreDocument the document for the hs list
  */
-class HighScore {
+class Highscore {
   constructor (nickname, time) {
     this.nickname = nickname
     this.time = time
@@ -92,4 +92,4 @@ class HighScore {
   }
 }
 
-export { HighScore }
+export { Highscore }

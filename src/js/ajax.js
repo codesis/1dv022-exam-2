@@ -5,7 +5,7 @@
  *
  */
 
-function request (config, callback) {
+function ajax (config, callback) {
   let req = new window.XMLHttpRequest()
 
   // first eventlistener, then see if we get an error (and which one)
@@ -31,4 +31,4 @@ function request (config, callback) {
   }
 }
 
-export { request }
+export { ajax }
