@@ -5,6 +5,7 @@
  * @param addNewHighscore puts new score on the hs list
  * @param addToFile saves the hs file when new score is added
  * @param highscoreDocument the document for the hs list
+ * this module NEEDS to be fixed, user nickname turns undefined in highscore
  */
 class Highscore {
   constructor (nickname, score) {
