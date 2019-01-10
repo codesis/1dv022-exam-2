@@ -26,7 +26,7 @@ class Question {
   // present the alternative question and its alternatives
   presentAlt () {
     let altQuestion = document.querySelector('#temp-questionAlt').content.cloneNode(true)
-    altQuestion.querySelector('#questionHead').appendChild(document.createTextNode(this.question))
+    altQuestion.querySelector('.questionHead').appendChild(document.createTextNode(this.question))
     // call the handler for the questions alternatives
     let altChoices = this.altFragment()
     altQuestion.querySelector('#questionForm').insertBefore(altChoices, altQuestion.querySelector('#submit'))
@@ -40,7 +40,7 @@ class Question {
     let label
     for (let alt in this.alt) {
       if (this.alt.hasOwnProperty(alt)) {
-        input = document.querySelector('#quizbox-Alt').content.cloneNode(true)
+        input = document.querySelector('#temp-alternative').content.cloneNode(true)
         if (first) {
           input.querySelector('input').setAttribute('checked', 'checked')
           first = false
@@ -55,9 +55,9 @@ class Question {
   }
   // present answer-typed questions
   presentQuestion () {
-    let answerQuestion = document.querySelector('#quixbox-Answer').content.cloneNode(true)
-    answerQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
-    document.querySelector('#quizsrc').appendChild(answerQuestion)
+    let answerQuestion = document.querySelector('#temp-question').content.cloneNode(true)
+    answerQuestion.querySelector('.questionHead').appendChild(document.createTextNode(this.question))
+    document.querySelector('#content').appendChild(answerQuestion)
   }
 }
 
