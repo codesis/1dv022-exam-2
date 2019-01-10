@@ -137,7 +137,20 @@ class QuizTime extends window.HTMLElement {
   // handler for when user completed the quiz
   gameComplete () {
     let hs = new Highscore(this.nickname, this.totalTime.toFixed(1))
-    let template = document.querySelector('#quizFinished')
+    let template = document.querySelector('#quizFinished').content.cloneNode(true)
+
+    if (hs.highscore.length > 0) {
+      template.querySelector('.hs-title').appendChild(document.createTextNode('Current highscore:'))
+      let hsDoc = hs.highscoreDocument()
+      template.querySelector('table').appendChild(hsDoc)
+    }
+    if (hs.addToFile()) {
+      let newScore = document.createElement('h1')
+      newScore.appendChild(document.createTextNode('New highscore!!'))
+      let div = template.querySelector('div')
+      div.insertBefore(newScore, div.firstChild)
+    }
+    this.clearDiv(document.querySelector('#content'))
   }
 }
 window.customElements.define('quiz-time', QuizTime)
