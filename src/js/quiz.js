@@ -149,7 +149,7 @@ class QuizTime extends window.HTMLElement {
       let hsDoc = hs.highscoreDocument()
       template.querySelector('table').appendChild(hsDoc)
     }
-    if (hs.addToFile()) {
+    if (hs.addNewHighscore()) {
       let newScore = document.createElement('h1')
       newScore.appendChild(document.createTextNode('New highscore!!'))
       let div = template.querySelector('div')

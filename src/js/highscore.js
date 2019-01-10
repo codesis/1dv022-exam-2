@@ -7,9 +7,9 @@
  * @param highscoreDocument the document for the hs list
  */
 class Highscore {
-  constructor (nickname, time) {
+  constructor (nickname, score) {
     this.nickname = nickname
-    this.time = time
+    this.score = score
     this.highscore = []
 
     this.fetchFileData()
@@ -30,28 +30,28 @@ class Highscore {
   }
   // Functions checks wether user make it to the highscore or not
   ifOnHighscore () {
-    let ifHighscore = false
+    let ifOnHighscore = false
 
     if (this.highscore.length === 0) {
-      ifHighscore = true
+      ifOnHighscore = true
     } else {
       // check the last submitted score on the highscore
-      let prevScore = this.highscore[this.highscore.length - 1].time
+      let prevScore = this.highscore[this.highscore.length - 1].score
       // if the time is faster than the last time on list or if highscore has less than 5 submits
-      if (this.time < prevScore || this.highscore.length < 5) {
-        ifHighscore = true
+      if (this.score < prevScore || this.highscore.length < 5) {
+        ifOnHighscore = true
       }
     }
-    return ifHighscore
+    return ifOnHighscore
   }
   // Function for putting a new highscore on the list
   addNewHighscore () {
     let added = false
     // if a new hs will be on the list
-    if (this.ifHighscore()) {
+    if (this.ifOnHighscore()) {
       let newScore = {
         nickname: this.nickname,
-        time: this.time
+        score: this.score
       }
       // incase of hs having 5 already, delete last place
       if (this.highscore.length === 5) {
@@ -59,7 +59,7 @@ class Highscore {
       }
       // sort the hs array before adding/saving the hs file
       this.highscore.push(newScore)
-      this.highscore = this.highscore.sort((a, b) => a.time - b.time)
+      this.highscore = this.highscore.sort((a, b) => a.score - b.score)
 
       this.addToFile()
 
@@ -74,19 +74,19 @@ class Highscore {
   // the document holding the highscore
   highscoreDocument () {
     let doc = document.createDocumentFragment()
-    let div
+    let template
     let hsName
-    let hsTime
+    let hsScore
 
     for (let i = 0; i < this.highscore.length; i += 1) {
-      div = document.querySelector('#quizbox-Highscore').content.cloneNode(true)
-      hsName = div.querySelector('.hs-nickname')
-      hsTime = div.querySelector('.hs-time')
+      template = document.querySelector('#highscoreList').content.cloneNode(true)
+      hsName = template.querySelector('.hs-nickname')
+      hsScore = template.querySelector('.hs-score')
 
       hsName.appendChild(document.createTextNode(this.highscore[i].nickname))
-      hsTime.appendChild(document.createTextNode(this.highscore[i].time))
+      hsScore.appendChild(document.createTextNode(this.highscore[i].score))
 
-      doc.appendChild(div)
+      doc.appendChild(template)
     }
     return doc
   }
