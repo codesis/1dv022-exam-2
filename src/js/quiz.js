@@ -117,7 +117,7 @@ class QuizTime extends window.HTMLElement {
     let hs = new Highscore(this.nickname, this.totalTime.toFixed(1))
     this.clearDiv(document.querySelector('#content'))
 
-    let template = document.querySelector('#temp-gameEnds').content.cloneNode(true)
+    let template = document.querySelector('#gameEnds').content.cloneNode(true)
 
     let title
     if (cause === 'time') {
@@ -136,7 +136,8 @@ class QuizTime extends window.HTMLElement {
   }
   // handler for when user completed the quiz
   gameComplete () {
-
+    let hs = new Highscore(this.nickname, this.totalTime.toFixed(1))
+    let template = document.querySelector('#quizFinished')
   }
 }
 window.customElements.define('quiz-time', QuizTime)
