@@ -16,6 +16,8 @@ class QuizTime extends window.HTMLElement {
     this.form = undefined
     this.question = undefined
     this.nextURL = 'http://vhost3.lnu.se:20080/question/1'
+
+    this.getQuestion()
   }
   // our eventlisteners for the form and the submit button
   listener () {
@@ -33,7 +35,7 @@ class QuizTime extends window.HTMLElement {
     }
     let respFunc = this.response.bind(this)
 
-    ajax.request(config, respFunc)
+    ajax(config, respFunc)
   }
   // handler for our response, if error or if response
   response (error, response) {
@@ -111,7 +113,7 @@ class QuizTime extends window.HTMLElement {
         }
       }
       let respFunc = this.response.bind(this)
-      ajax.request(config, respFunc)
+      ajax(config, respFunc)
     }
   }
   // handler for when user loses the game because of wrong answer or lack of time

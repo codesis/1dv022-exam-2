@@ -25,14 +25,12 @@ class Question {
   }
   // present the alternative question and its alternatives
   presentAlt () {
-    let altQuestion = document.querySelector('#quizbox-Alt').content.cloneNode(true)
-    altQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
+    let altQuestion = document.querySelector('#temp-questionAlt').content.cloneNode(true)
+    altQuestion.querySelector('#questionHead').appendChild(document.createTextNode(this.question))
     // call the handler for the questions alternatives
     let altChoices = this.altFragment()
     altQuestion.querySelector('#questionForm').insertBefore(altChoices, altQuestion.querySelector('#submit'))
-    document.querySelector('#quizsrc').appendChild(altQuestion)
-    document.getElementById('quizbox-Alt').style.visibility = 'visible'
-    document.getElementById('quizbox-Answer').style.visibility = 'hidden'
+    document.querySelector('#content').appendChild(altQuestion)
   }
   // handle the questions alternatives by documentfragment
   altFragment () {
@@ -60,8 +58,6 @@ class Question {
     let answerQuestion = document.querySelector('#quixbox-Answer').content.cloneNode(true)
     answerQuestion.querySelector('#question').appendChild(document.createTextNode(this.question))
     document.querySelector('#quizsrc').appendChild(answerQuestion)
-    document.getElementById('quizbox-Alt').style.visibility = 'hidden'
-    document.getElementById('quizbox-Answer').style.visibility = 'visible'
   }
 }
 
