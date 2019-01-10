@@ -102,7 +102,7 @@ class QuizTime extends window.HTMLElement {
       if (document.querySelector('#answer')) {
         input = document.querySelector('#answer').value
       } else {
-        input = document.getElementsByName('alternative').checked.value
+        input = document.querySelector("input[name='alternative']:checked").value
       }
       // configuring the configuration for when we send the user's answer
       let config = {
