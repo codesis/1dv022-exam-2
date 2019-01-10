@@ -26,7 +26,7 @@ class Timer {
     if (diff >= this.time) {
       showTime = 0
       clearInterval(this.interval)
-      this.owner.gameOver('time')
+      this.owner.gameEnds('time')
     }
     if (showTime <= 10) {
       this.printTime(showTime.toFixed(1))

@@ -63,7 +63,7 @@ class QuizTime extends window.HTMLElement {
     this.question = new Question(obj)
     this.question.present()
 
-    this.timer = new Timer(this, document.querySelector('#timer h1'), 20)
+    this.timer = new Timer(20, document.querySelector('#timer h1'), this)
     this.timer.startTimer()
 
     this.listener()
