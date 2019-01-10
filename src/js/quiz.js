@@ -6,11 +6,11 @@ import { Highscore } from './highscore.js'
  * @constructor
  */
 class QuizTime extends window.HTMLElement {
-  constructor (nickname) {
+  constructor () {
     super()
 
     this.totalTime = 0
-    this.nickname = document.querySelector('.nickname').value
+    this.nickname = document.querySelector('#nickname').value
     this.button = undefined
     this.timer = undefined
     this.form = undefined

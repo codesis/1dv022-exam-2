@@ -7,8 +7,8 @@ function submit (e) {
     e.preventDefault()
 
     let input = document.querySelector('#nickname').value
-
-    if (input.length > 1) {
+    // lets say minimum 3 characters for nickname to start the quiz
+    if (input.length >= 3) {
       quiz = new QuizTime()
     }
   }
