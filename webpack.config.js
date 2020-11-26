@@ -21,6 +21,7 @@ module.exports = {
         // set up standard-loader as a preloader
         enforce: 'pre',
         test: /\.jsx?$/,
+        include: path.resolve(__dirname, 'src'),
         loader: 'standard-loader',
         exclude: /(node_modules)/,
         options: {
@@ -40,9 +41,7 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: [
-          'file-loader'
-        ]
+        use: ['file-loader']
       }
     ]
   },
