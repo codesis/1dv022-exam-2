@@ -35,5 +35,6 @@
     "debug": "webpack-dev-server",
     "start": "webpack-dev-server",
     "build": "webpack"
-  }
+  },
+  "heroku-run-build-script": true
 }
