@@ -14,7 +14,6 @@ module.exports = {
     public: 'localhost:4000',
     watchContentBase: true
   },
-  deploy: 'webpack --config webpack.production.config.js',
   devtool: 'cheap-eval-source-map',
   module: {
     rules: [
